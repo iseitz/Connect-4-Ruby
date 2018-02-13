@@ -1,5 +1,5 @@
-# require 'player'
 
+require_relative 'board_space'
 
 class Board
   LETTERS = ("a".."z").to_a
@@ -15,7 +15,11 @@ class Board
   def build_board
     new_board = []
     @row_num.times do
-      new_board << Array.new(@col_num)
+      row = []
+      @col_num.times do
+        row << BoardSpace.new
+      end
+      new_board << row
     end
     new_board
   end
@@ -28,23 +32,30 @@ class Board
      board_output = ""
      @game_board.each do |row|
        row.each_with_index do |space, index|
-         if space.nil?
-            if index == 0
-              board_output += "|  "
-            elsif index == @col_num - 1
-              board_output += " |\n"
-            else
-              board_output += "  "
-            end
-         else
-            if index == 0
-              board_output += "|#{space} "
-            elsif index == @col_num - 1
-              board_output += "#{space}|\n"
-            else
-              board_output += "#{space} "
-            end
-         end
+          if index == 0
+            board_output += "|#{space.to_char} "
+          elsif index == @col_num - 1
+            board_output += "#{space.to_char}|\n"
+          else
+            board_output += "#{space.to_char} "
+          end
+         # if space.nil?
+         #    if index == 0
+         #      board_output += "|  "
+         #    elsif index == @col_num - 1
+         #      board_output += " |\n"
+         #    else
+         #      board_output += "  "
+         #    end
+         # else
+         #    if index == 0
+         #      board_output += "|#{space} "
+         #    elsif index == @col_num - 1
+         #      board_output += "#{space}|\n"
+         #    else
+         #      board_output += "#{space} "
+         #    end
+         # end
        end
      end
      bottom_row = ""
@@ -62,7 +73,7 @@ class Board
    # end
    def letter_to_index (column)
      LETTERS.each_with_index do |letter, index|
-       if letter == column
+       if column == letter
          column = index
        end
      end
@@ -72,8 +83,8 @@ class Board
   def add_turn(player, column)
     column = letter_to_index(column)
     @game_board.reverse_each do |row|
-      if row[column].nil?
-        row[column] = player
+      if !row[column].occupied?
+        row[column].player = player
         break
       end
     end
@@ -82,7 +93,7 @@ class Board
   def has_empty_spaces?
     @game_board.each do |row|
       row.each do |space|
-        if space.nil?
+        if !space.occupied?
           return true
         end
       end
@@ -93,12 +104,16 @@ class Board
   def column_full?(column)
     column = letter_to_index(column)
     @game_board.each_with_index do |row, index|
-      if row[column].nil?
+      if !row[column].occupied?
         return false
       else
         return true
       end
     end
+  end
+
+  def winner?
+    false
   end
 end
 

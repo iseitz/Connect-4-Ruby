@@ -9,8 +9,8 @@ describe Player do
   end
 
   it 'has an o symbol when created' do
-    player = Player.new('y')
-    expect(player.symbol).to eq('y')
+    player = Player.new('o')
+    expect(player.symbol).to eq('o')
   end
 
   it 'creates an empty string for players name and saves it' do

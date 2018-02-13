@@ -1,38 +1,45 @@
-require'player'
-require'board'
+require_relative'player'
+require_relative'board'
 
 
 
 board = Board.new
-player_x = Player.new('x')
-player_o = Player.new('o')
-players = [player_x, player_o].shuffle
-turn_index = 0
+x_player = Player.new('x')
+o_player = Player.new('o')
+players = [x_player, o_player].shuffle
 
 puts "Hello! Welcome to Connect-4!"
-while board.has_empty_spaces? && !board.winner?
-  current_player = players[turn_index]
-  puts "Player #{current_player.character}, please enter your name"
-  player_o.name = gets.chomp
-puts "Player X, please enter your name"
-player_x.name = gets.chomp
-if player_o_name.downcase == player_x_name.downcase
-  puts " The name #{player_o} is already taken. Player X, please choose a different name"
-  puts"Player X name: " \bplayer_x = gets.chomp
-end
-
+puts "Player #{x_player.symbol}, please enter your name"
+x_player.add_name
+puts "Player #{o_player.symbol}, please enter your name"
+o_player.add_name
+  if o_player.name.downcase == x_player.name.downcase
+    puts "Player #{o_player.symbol}, please chose a different name"
+    o_player.add_name
+  end
 puts "Lets start!"
+turn_index = 0
 puts "Here is the board"
 board.build_board
 puts "#{board.print_board}"
 
-puts "#{player_o.name}, please enter the letter of the column where you would like to drop your piece"
-column_letter = gets.chomp
-if !board.column_full?(column_letter)
-  board.add_turn("o", column_letter)
-  puts "#{board.print_board}"
-else "puts please check the choice, this column is full"
-  puts "#{board.print_board}"
-
-
+while board.has_empty_spaces? && !board.winner?
+  current_player = players[turn_index]
+  puts "#{current_player.name}, please enter the letter of the column where you would like to drop your piece"
+  column = gets.chomp
+  if column == '' || column == nil
+    puts "please chose the column"
+    column = gets.chomp
+    board.add_turn(current_player, column)
+    puts "#{board.print_board}"
+  elsif board.column_full?(column)
+      puts "please chose a different column, this column is full"
+      column = gets.chomp
+      board.add_turn(current_player, column)
+      puts "#{board.print_board}"
+  else
+    board.add_turn(current_player, column)
+    puts "#{board.print_board}"
+  end
+  turn_index = turn_index == 0 ? 1 : 0
 end

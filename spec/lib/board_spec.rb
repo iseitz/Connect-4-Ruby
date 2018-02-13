@@ -52,7 +52,8 @@ describe Board do
   it 'places a player on the board' do
     board = Board.new
     board.build_board
-    board.add_turn("x", "a")
+    player = Player.new("x")
+    board.add_turn(player, "a")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -71,8 +72,9 @@ describe Board do
   it 'places the symbol one row above if the previous spot is already taken on the board' do
     board = Board.new
     board.build_board
-    board.add_turn("x", "a")
-    board.add_turn("x", "a")
+    player = Player.new("x")
+    board.add_turn(player, "a")
+    board.add_turn(player, "a")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -91,7 +93,8 @@ describe Board do
   it 'places a player on the further right size of the board if the spot is chosen' do
     board = Board.new
     board.build_board
-    board.add_turn("o", "j")
+    player = Player.new("o")
+    board.add_turn(player, "j")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -110,8 +113,10 @@ describe Board do
   it 'places a player in the middle of the board if the spot is chosen' do
     board = Board.new
     board.build_board
-    board.add_turn("o", "f")
-    board.add_turn("x", "f")
+    x_player = Player.new("x")
+    o_player = Player.new("o")
+    board.add_turn(o_player, "f")
+    board.add_turn(x_player, "f")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -132,7 +137,7 @@ describe Board do
     expect(board.has_empty_spaces?).to eq(true)
   end
 
-  it 'has no empty spaces if all sopts are taken' do
+  it 'has no empty spaces if all spots are taken' do
     board = Board.new(3,3)
     3.times do |index|
       3.times do |column|

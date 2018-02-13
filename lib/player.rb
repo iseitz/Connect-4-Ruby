@@ -8,14 +8,8 @@ class Player
     @player_names =[]
   end
 
-  def prompt_name
-    puts "What is your name?"
+  def add_name
     @name = gets.chomp
-    if name.size <= 1 || player_names.include?(@name.downcase)
-      puts "Please secify a proper name"
-      @name = gets.chomp
-    end
-    @player_names << @name.downcase
     @name
   end
 
