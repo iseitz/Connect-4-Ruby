@@ -1,22 +1,28 @@
 require'player'
 require'board'
-require'game'
+
+
+
+board = Board.new
+player_x = Player.new('x')
+player_o = Player.new('o')
+players = [player_x, player_o].shuffle
+turn_index = 0
 
 puts "Hello! Welcome to Connect-4!"
-player_o = Player.new("o")
-player_x = Player.new("x")
-puts "Player O, #{player_o.prompt_name}"
-player_o_name = gets.chomp
-puts "Player X, #{player_x.prompt_name}"
-player_x_name = gets.chomp
+while board.has_empty_spaces? && !board.winner?
+  current_player = players[turn_index]
+  puts "Player #{current_player.character}, please enter your name"
+  player_o.name = gets.chomp
+puts "Player X, please enter your name"
+player_x.name = gets.chomp
 if player_o_name.downcase == player_x_name.downcase
   puts " The name #{player_o} is already taken. Player X, please choose a different name"
-  player_x = gets.chomp
+  puts"Player X name: " \bplayer_x = gets.chomp
 end
 
 puts "Lets start!"
 puts "Here is the board"
-board = Board.new
 board.build_board
 puts "#{board.print_board}"
 

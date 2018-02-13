@@ -1,5 +1,5 @@
-require'spec_helper'
-require_relative '../../lib/board'
+require 'spec_helper'
+# require_relative '../../lib/board'
 
 describe Board do
 
@@ -130,6 +130,16 @@ describe Board do
   it 'creates a board with empty spaces that can be taken' do
     board = Board.new
     expect(board.has_empty_spaces?).to eq(true)
+  end
+
+  it 'has no empty spaces if all sopts are taken' do
+    board = Board.new(3,3)
+    3.times do |index|
+      3.times do |column|
+        board.add_turn("x", column)
+      end
+    end
+    expect(board.has_empty_spaces?).to eq(false)
   end
 
   it "notifies you if the column that you chose to drop your piece is full" do

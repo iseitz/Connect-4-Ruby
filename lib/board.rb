@@ -60,21 +60,24 @@ class Board
    # def turn(player)
    #   player = Player.new
    # end
+   def letter_to_index (column)
+     LETTERS.each_with_index do |letter, index|
+       if letter == column
+         column = index
+       end
+     end
+     column
+   end
 
-  def add_turn(symbol, column)
-    LETTERS.each_with_index do |letter, index|
-      if letter == column
-        column = index
-      end
-    end
+  def add_turn(player, column)
+    column = letter_to_index(column)
     @game_board.reverse_each do |row|
       if row[column].nil?
-        row[column] = symbol.downcase
+        row[column] = player
         break
       end
     end
   end
-
 
   def has_empty_spaces?
     @game_board.each do |row|
@@ -87,14 +90,10 @@ class Board
     return false
   end
 
-  def column_full?(column_letter)
-    LETTERS.each_with_index do |letter, index|
-      if column_letter == letter
-        column_letter = index
-      end
-    end
+  def column_full?(column)
+    column = letter_to_index(column)
     @game_board.each_with_index do |row, index|
-      if row[column_letter].nil?
+      if row[column].nil?
         return false
       else
         return true
@@ -104,13 +103,14 @@ class Board
 end
 
 
-my_board = Board.new(5, 5)
-my_board.build_board
-my_board.add_turn("o", "e")
-my_board.add_turn("x", "e")
-my_board.add_turn("x", "e")
-my_board.add_turn("x", "e")
-my_board.add_turn("x", "e")
-
-puts "#{my_board.print_board}"
-puts my_board.column_full?("e")
+# my_board = Board.new(5, 5)
+# my_board.build_board
+#
+# # my_board.add_turn("o", "e")
+# # my_board.add_turn("x", "e")
+# # my_board.add_turn("x", "e")
+# # my_board.add_turn("x", "e")
+# # my_board.add_turn("x", "e")
+#
+# puts "#{my_board.print_board}"
+# puts my_board.column_full?("e")
