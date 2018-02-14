@@ -5,7 +5,6 @@ class Player
   def initialize(symbol)
     @name = ""
     @symbol = symbol
-    @player_names =[]
   end
 
   def add_name

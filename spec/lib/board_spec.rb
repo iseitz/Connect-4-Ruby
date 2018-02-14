@@ -2,16 +2,17 @@ require 'spec_helper'
 # require_relative '../../lib/board'
 
 describe Board do
-
+  let (:board) { Board.new }
+  let(:player) { Player.new('x') }
+  let(:opposing_player) { Player.new('o') }
+  
   it 'can be initialized with default 10 rows and columns' do
-    board = Board.new
     board.build_board
     expect(board.rows.size).to eq(10)
     expect(board.rows[0].size).to eq(10)
   end
 
   it 'prints a board with 10 rows, 10 columns and letter row at the bottom for a 10 column board' do
-    board = Board.new
     board.build_board
     board_printout =
     "|                   |\n" +
@@ -29,15 +30,15 @@ describe Board do
   end
 
   it 'can be initialized with 6 rows and 7 columns' do
-    board = Board.new(7,6)
-    board.build_board
-    expect(board.rows.size).to eq(6)
-    expect(board.rows[0].size).to eq(7)
+    my_board = Board.new(7,6)
+    my_board.build_board
+    expect(my_board.rows.size).to eq(6)
+    expect(my_board.rows[0].size).to eq(7)
   end
 
   it 'prints a board with 6 rows and 7 columns' do
-    board = Board.new(7,6)
-    board.build_board
+    my_board = Board.new(7,6)
+    my_board.build_board
     board_printout =
     "|             |\n" +
     "|             |\n" +
@@ -46,13 +47,11 @@ describe Board do
     "|             |\n" +
     "|             |\n" +
     " A B C D E F G \n"
-    expect(board.print_board).to eq(board_printout)
+    expect(my_board.print_board).to eq(board_printout)
   end
 
   it 'places a player on the board' do
-    board = Board.new
     board.build_board
-    player = Player.new("x")
     board.add_turn(player, "a")
     board_printout =
     "|                   |\n" +
@@ -70,9 +69,7 @@ describe Board do
   end
 
   it 'places the symbol one row above if the previous spot is already taken on the board' do
-    board = Board.new
     board.build_board
-    player = Player.new("x")
     board.add_turn(player, "a")
     board.add_turn(player, "a")
     board_printout =
@@ -91,10 +88,8 @@ describe Board do
   end
 
   it 'places a player on the further right size of the board if the spot is chosen' do
-    board = Board.new
     board.build_board
-    player = Player.new("o")
-    board.add_turn(player, "j")
+    board.add_turn(opposing_player, "j")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -111,12 +106,9 @@ describe Board do
   end
 
   it 'places a player in the middle of the board if the spot is chosen' do
-    board = Board.new
     board.build_board
-    x_player = Player.new("x")
-    o_player = Player.new("o")
-    board.add_turn(o_player, "f")
-    board.add_turn(x_player, "f")
+    board.add_turn(opposing_player, "f")
+    board.add_turn(player, "f")
     board_printout =
     "|                   |\n" +
     "|                   |\n" +
@@ -133,29 +125,28 @@ describe Board do
   end
 
   it 'creates a board with empty spaces that can be taken' do
-    board = Board.new
     expect(board.has_empty_spaces?).to eq(true)
   end
 
   it 'has no empty spaces if all spots are taken' do
-    board = Board.new(3,3)
+    my_board = Board.new(3,3)
     3.times do |index|
       3.times do |column|
-        board.add_turn("x", column)
+        my_board.add_turn(player, column)
       end
     end
-    expect(board.has_empty_spaces?).to eq(false)
+    expect(my_board.has_empty_spaces?).to eq(false)
   end
 
   it "notifies you if the column that you chose to drop your piece is full" do
-    board = Board.new(5, 5)
-    board.build_board
-    board.add_turn("o", "e")
-    board.add_turn("x", "e")
-    board.add_turn("x", "e")
-    board.add_turn("x", "e")
-    board.add_turn("x", "e")
-    expect(board.column_full?("e")).to eq(true)
+    my_board = Board.new(5, 5)
+    my_board.build_board
+    my_board.add_turn(player, 'b')
+    my_board.add_turn(player, 'b')
+    my_board.add_turn(opposing_player, 'b')
+    my_board.add_turn(player, 'b')
+    my_board.add_turn(player, 'b')
+    expect(my_board.column_full?('b')).to eq(true)
   end
 
 end

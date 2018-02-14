@@ -1,10 +1,12 @@
-
+require_relative 'game_turn'
 require_relative 'board_space'
 
 class Board
   LETTERS = ("a".."z").to_a
   attr_accessor :game_board
-  attr_reader :col_num, :row_num
+  attr_reader :col_num
+  attr_reader :row_num
+  attr_reader :letter_to_index
 
   def initialize(col_num = 10, row_num = 10)
     @col_num = col_num
@@ -81,14 +83,18 @@ class Board
    end
 
   def add_turn(player, column)
-    column = letter_to_index(column)
-    @game_board.reverse_each do |row|
-      if !row[column].occupied?
-        row[column].player = player
-        break
-      end
-    end
+      @last_turn = GameTurn.new(self, player, column)
+      @last_turn.take!
   end
+
+  #   column = letter_to_index(column)
+  #   @game_board.reverse_each do |row|
+  #     if !row[column].occupied?
+  #       row[column].player = player
+  #       break
+  #     end
+  #   end
+  # end
 
   def has_empty_spaces?
     @game_board.each do |row|
@@ -103,7 +109,7 @@ class Board
 
   def column_full?(column)
     column = letter_to_index(column)
-    @game_board.each_with_index do |row, index|
+    @game_board.each do |row|
       if !row[column].occupied?
         return false
       else
@@ -113,7 +119,11 @@ class Board
   end
 
   def winner?
-    false
+    if @last_turn
+      @last_turn.winner?
+    else
+      false
+    end
   end
 end
 
