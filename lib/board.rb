@@ -41,23 +41,6 @@ class Board
           else
             board_output += "#{space.to_char} "
           end
-         # if space.nil?
-         #    if index == 0
-         #      board_output += "|  "
-         #    elsif index == @col_num - 1
-         #      board_output += " |\n"
-         #    else
-         #      board_output += "  "
-         #    end
-         # else
-         #    if index == 0
-         #      board_output += "|#{space} "
-         #    elsif index == @col_num - 1
-         #      board_output += "#{space}|\n"
-         #    else
-         #      board_output += "#{space} "
-         #    end
-         # end
        end
      end
      bottom_row = ""
@@ -70,31 +53,19 @@ class Board
      board_output += bottom_row
   end
 
-   # def turn(player)
-   #   player = Player.new
-   # end
-   def letter_to_index (column)
+  def letter_to_index (column)
      LETTERS.each_with_index do |letter, index|
        if column == letter
          column = index
        end
      end
      column
-   end
+  end
 
   def add_turn(player, column)
       @last_turn = GameTurn.new(self, player, column)
       @last_turn.take!
   end
-
-  #   column = letter_to_index(column)
-  #   @game_board.reverse_each do |row|
-  #     if !row[column].occupied?
-  #       row[column].player = player
-  #       break
-  #     end
-  #   end
-  # end
 
   def has_empty_spaces?
     @game_board.each do |row|
@@ -126,16 +97,3 @@ class Board
     end
   end
 end
-
-
-# my_board = Board.new(5, 5)
-# my_board.build_board
-#
-# # my_board.add_turn("o", "e")
-# # my_board.add_turn("x", "e")
-# # my_board.add_turn("x", "e")
-# # my_board.add_turn("x", "e")
-# # my_board.add_turn("x", "e")
-#
-# puts "#{my_board.print_board}"
-# puts my_board.column_full?("e")

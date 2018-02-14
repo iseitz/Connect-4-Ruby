@@ -70,21 +70,3 @@ class GameTurn
     false
   end
 end
-
-#
-#
-#
-#
-#
-#
-
-#
-#
-#   def vertical_win?
-#     victory = true
-#     board.rows.each do |row|
-#       victory = false if row[@col_index].player != @player
-#     end
-#     victory
-#   end
-# end
